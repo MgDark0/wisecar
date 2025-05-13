@@ -58,10 +58,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
-                  <Link href={link.path}>
-                    <a className="text-gray-400 hover:text-amber-400 transition-colors duration-300">
-                      {link.name}
-                    </a>
+                  <Link 
+                    href={link.path}
+                    className="text-gray-400 hover:text-amber-400 transition-colors duration-300"
+                  >
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -73,10 +74,11 @@ const Footer = () => {
             <ul className="space-y-3">
               {services.map((service, index) => (
                 <li key={index}>
-                  <Link href={service.path}>
-                    <a className="text-gray-400 hover:text-amber-400 transition-colors duration-300">
-                      {service.name}
-                    </a>
+                  <Link 
+                    href={service.path}
+                    className="text-gray-400 hover:text-amber-400 transition-colors duration-300"
+                  >
+                    {service.name}
                   </Link>
                 </li>
               ))}

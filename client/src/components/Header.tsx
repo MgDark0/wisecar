@@ -93,15 +93,15 @@ const Header = () => {
               </SheetHeader>
               <nav className="flex flex-col mt-8 gap-4">
                 {navLinks.map((link) => (
-                  <Link key={link.path} href={link.path}>
-                    <a
-                      className={`text-white font-montserrat text-lg uppercase tracking-wider font-medium hover:text-amber-400 transition-colors duration-300 ${
-                        isActive(link.path) ? "text-amber-400" : ""
-                      }`}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {link.name}
-                    </a>
+                  <Link 
+                    key={link.path} 
+                    href={link.path}
+                    className={`text-white font-montserrat text-lg uppercase tracking-wider font-medium hover:text-amber-400 transition-colors duration-300 ${
+                      isActive(link.path) ? "text-amber-400" : ""
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.name}
                   </Link>
                 ))}
                 <Button
