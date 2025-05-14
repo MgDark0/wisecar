@@ -39,18 +39,34 @@ const HeroSection = () => {
             </div>
           </motion.div>
           
-          {/* Hero car image */}
+          {/* Hero car video */}
           <motion.div
             className="w-full md:w-1/2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <img 
-              src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80" 
-              alt="Luxury sports car" 
-              className="w-full h-auto rounded-lg shadow-2xl"
-            />
+            <div className="relative rounded-lg shadow-2xl overflow-hidden">
+              <video 
+                className="w-full h-auto"
+                autoPlay 
+                muted 
+                loop 
+                playsInline
+                poster="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80"
+              >
+                <source 
+                  src="https://cdn.pixabay.com/vimeo/328126065/lamborghini-23649.mp4?width=1280&hash=e373e387ca8f0e1c27aec75eb3f6f6a1da9e687a" 
+                  type="video/mp4" 
+                />
+                <source 
+                  src="https://cdn.pixabay.com/vimeo/767307082/sport-car-169966.mp4?width=1280&hash=626e8c8c82db41143b4f6d2aaff0d4f30a9cc4e6" 
+                  type="video/mp4" 
+                />
+                Your browser does not support the video tag.
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent pointer-events-none"></div>
+            </div>
           </motion.div>
         </div>
       </div>
