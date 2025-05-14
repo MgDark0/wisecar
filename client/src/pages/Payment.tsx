@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation } from "wouter";
+import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,9 @@ const mockCarData = {
 
 const Payment = () => {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
+  const [isProcessing, setIsProcessing] = useState(false);
   
   // This would typically come from a previous page or context
   const car = mockCarData;
@@ -136,15 +139,42 @@ const Payment = () => {
                   <Button 
                     type="submit" 
                     className="w-full bg-accent hover:bg-red-700 text-white font-montserrat uppercase py-6 tracking-wider transition-colors duration-300"
+                    disabled={isProcessing}
                     onClick={() => {
+                      setIsProcessing(true);
+                      
                       if (paymentMethod === "credit-card") {
                         document.getElementById("credit-card-form")?.dispatchEvent(
                           new Event("submit", { bubbles: true, cancelable: true })
                         );
+                      } else if (paymentMethod === "paypal") {
+                        // Trigger PayPal payment
+                        toast({
+                          title: "Processing PayPal Payment",
+                          description: "Redirecting to PayPal checkout...",
+                        });
+                        
+                        setTimeout(() => {
+                          toast({
+                            title: "Payment Successful",
+                            description: "Your PayPal payment has been processed successfully.",
+                          });
+                          
+                          setTimeout(() => {
+                            setLocation('/payment-success');
+                          }, 1000);
+                        }, 2000);
+                      } else if (paymentMethod === "crypto") {
+                        // Notify user about crypto payment
+                        toast({
+                          title: "Cryptocurrency Payment",
+                          description: "Please complete the payment using the cryptocurrency options provided.",
+                        });
+                        setIsProcessing(false);
                       }
                     }}
                   >
-                    Complete Purchase
+                    {isProcessing ? 'Processing...' : 'Complete Purchase'}
                   </Button>
                 </CardFooter>
               </Card>
