@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 import {
   Form,
   FormControl,
@@ -34,6 +35,7 @@ type CreditCardFormValues = z.infer<typeof creditCardSchema>;
 const CreditCardForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [, setLocation] = useLocation();
   
   const form = useForm<CreditCardFormValues>({
     resolver: zodResolver(creditCardSchema),
@@ -62,7 +64,10 @@ const CreditCardForm = () => {
         variant: "default",
       });
       
-      // Redirect to confirmation page or show success state
+      // Redirect to confirmation page
+      setTimeout(() => {
+        setLocation('/payment-success');
+      }, 1000);
     } catch (error) {
       console.error("Payment error:", error);
       toast({
