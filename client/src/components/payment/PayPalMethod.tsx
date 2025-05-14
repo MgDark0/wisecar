@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 
 interface PayPalMethodProps {
@@ -10,6 +11,7 @@ interface PayPalMethodProps {
 
 const PayPalMethod = ({ amount, currency, intent }: PayPalMethodProps) => {
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const [loading, setLoading] = useState(true);
   const paypalButtonRef = useRef<HTMLDivElement>(null);
 
@@ -37,6 +39,19 @@ const PayPalMethod = ({ amount, currency, intent }: PayPalMethodProps) => {
       title: "PayPal Payment",
       description: "You would now be redirected to PayPal to complete your payment.",
     });
+    
+    // Simulate payment process
+    setTimeout(() => {
+      toast({
+        title: "Payment Successful",
+        description: "Your PayPal payment has been processed successfully.",
+      });
+      
+      // Redirect to success page
+      setTimeout(() => {
+        setLocation('/payment-success');
+      }, 1000);
+    }, 2000);
   };
 
   if (loading) {
