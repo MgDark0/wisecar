@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface SplashScreenProps {
@@ -7,8 +7,23 @@ interface SplashScreenProps {
 
 const SplashScreen = ({ onFinished }: SplashScreenProps) => {
   const [progress, setProgress] = useState(0);
+  const carLogoRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
+    // Add headlight animation
+    const addHeadlightGlow = () => {
+      if (carLogoRef.current) {
+        const headlights = carLogoRef.current.querySelectorAll('rect[fill="#ffdd44"]');
+        headlights.forEach(headlight => {
+          headlight.setAttribute('filter', 'url(#glow)');
+        });
+      }
+    };
+
+    // Call once after a short delay
+    const headlightTimer = setTimeout(addHeadlightGlow, 500);
+    
+    // Main timer to finish the splash screen
     const timer = setTimeout(() => {
       onFinished();
     }, 3000); // Show splash screen for 3 seconds
@@ -27,6 +42,7 @@ const SplashScreen = ({ onFinished }: SplashScreenProps) => {
 
     return () => {
       clearTimeout(timer);
+      clearTimeout(headlightTimer);
       clearInterval(interval);
     };
   }, [onFinished]);
@@ -39,6 +55,21 @@ const SplashScreen = ({ onFinished }: SplashScreenProps) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
+      {/* SVG Filters for effects */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+          
+          <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ff3333" />
+            <stop offset="50%" stopColor="#ff5555" />
+            <stop offset="100%" stopColor="#ff9933" />
+          </linearGradient>
+        </defs>
+      </svg>
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -59,12 +90,45 @@ const SplashScreen = ({ onFinished }: SplashScreenProps) => {
             }}
             className="mr-3"
           >
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.5 18L19.5 14H4.5L1.5 18" stroke="red" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M3 22V21C3 19.8954 3.89543 19 5 19H19C20.1046 19 21 19.8954 21 21V22" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="6.5" cy="16.5" r="1.5" fill="white"/>
-              <circle cx="17.5" cy="16.5" r="1.5" fill="white"/>
-              <path d="M5 14L8 7H16L19 14" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <svg 
+              ref={carLogoRef}
+              width="48" 
+              height="48" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Sports car body */}
+              <path 
+                d="M3,12.5 h18 v3 a2,2 0 0 1 -2,2 h-14 a2,2 0 0 1 -2,-2 z" 
+                fill="#222" 
+                stroke="#ff3333" 
+                strokeWidth="1"
+              />
+              
+              {/* Car roof */}
+              <path 
+                d="M6,12.5 v-3 a1,1 0 0 1 1,-1 h10 a1,1 0 0 1 1,1 v3" 
+                fill="#333" 
+                stroke="#ccc" 
+                strokeWidth="1"
+              />
+              
+              {/* Windows */}
+              <path 
+                d="M7.5,8.8 v3.7 h9 v-3.7 z" 
+                fill="#111" 
+                stroke="#44aaff" 
+                strokeWidth="0.5"
+              />
+              
+              {/* Wheels */}
+              <circle cx="7" cy="17.5" r="2" fill="#333" stroke="#777" />
+              <circle cx="17" cy="17.5" r="2" fill="#333" stroke="#777" />
+              
+              {/* Headlights */}
+              <rect x="3.2" y="11.2" width="1.5" height="1" rx="0.5" fill="#ffdd44" />
+              <rect x="19.3" y="11.2" width="1.5" height="1" rx="0.5" fill="#ffdd44" />
             </svg>
           </motion.div>
           
@@ -82,7 +146,8 @@ const SplashScreen = ({ onFinished }: SplashScreenProps) => {
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           <motion.div 
-            className="h-full bg-gradient-to-r from-red-500 via-red-600 to-amber-500 rounded-full"
+            className="h-full rounded-full"
+            style={{ backgroundColor: "#ff3333" }}
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ 
