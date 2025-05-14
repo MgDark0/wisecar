@@ -204,10 +204,21 @@ const CarDetails = () => {
               </Tabs>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="bg-accent hover:bg-red-700 text-white font-montserrat uppercase tracking-wider text-sm py-6 px-8 rounded-md transition-all duration-300 hover:shadow-lg hover:shadow-red-900/30">
+                <Button 
+                  className="bg-accent hover:bg-red-700 text-white font-montserrat uppercase tracking-wider text-sm py-6 px-8 rounded-md transition-all duration-300 hover:shadow-lg hover:shadow-red-900/30"
+                  onClick={() => setLocation('/payment')}
+                >
+                  Purchase Now
+                </Button>
+                <Button 
+                  className="bg-amber-400 hover:bg-yellow-600 text-black font-montserrat uppercase tracking-wider text-sm py-6 px-8 rounded-md transition-all duration-300"
+                >
                   Schedule Test Drive
                 </Button>
-                <Button variant="outline" className="bg-transparent border border-white text-white hover:border-amber-400 hover:text-amber-400 font-montserrat uppercase tracking-wider text-sm py-6 px-8 rounded-md transition-colors duration-300">
+                <Button 
+                  variant="outline" 
+                  className="bg-transparent border border-white text-white hover:border-amber-400 hover:text-amber-400 font-montserrat uppercase tracking-wider text-sm py-6 px-8 rounded-md transition-colors duration-300"
+                >
                   Inquire About This Car
                 </Button>
               </div>
