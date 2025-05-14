@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -15,12 +16,12 @@ const HeroSection = () => {
       alt: "Luxury sports car - White Ferrari"
     },
     {
-      url: "https://images.unsplash.com/photo-1617814076668-1ef67dab0fe3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
+      url: "https://images.unsplash.com/photo-1592198084033-aade902d1aae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
       alt: "Luxury sports car - Lamborghini"
     },
     {
-      url: "https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
-      alt: "Luxury sports car - Black Porsche"
+      url: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
+      alt: "Luxury sports car - Red Ferrari"
     }
   ];
   
@@ -93,16 +94,33 @@ const HeroSection = () => {
               
               <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent pointer-events-none"></div>
               
+              {/* Navigation arrows */}
+              <button 
+                onClick={() => setCurrentImage(prev => (prev === 0 ? images.length - 1 : prev - 1))}
+                className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all duration-300"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              
+              <button 
+                onClick={() => setCurrentImage(prev => (prev === images.length - 1 ? 0 : prev + 1))}
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all duration-300"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+              
               {/* Image indicator dots */}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
                 {images.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImage(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
                       currentImage === index 
-                        ? "bg-white w-4" 
-                        : "bg-white/50"
+                        ? "bg-amber-500 w-6" 
+                        : "bg-white hover:bg-gray-300"
                     }`}
                     aria-label={`View image ${index + 1}`}
                   />
