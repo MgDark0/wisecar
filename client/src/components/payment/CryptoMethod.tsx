@@ -24,6 +24,7 @@ interface CryptoOption {
 
 const CryptoMethod = ({ amount }: CryptoMethodProps) => {
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const [selectedCrypto, setSelectedCrypto] = useState("bitcoin");
   
   // Mock crypto options - in a real implementation these would come from an API
@@ -61,6 +62,27 @@ const CryptoMethod = ({ amount }: CryptoMethodProps) => {
         description: `${selectedOption.name} address copied to clipboard`,
       });
     }
+  };
+  
+  const handleConfirmPayment = () => {
+    toast({
+      title: "Verifying Payment",
+      description: "Checking the blockchain for your transaction...",
+    });
+    
+    // Simulate payment verification
+    setTimeout(() => {
+      toast({
+        title: "Payment Confirmed",
+        description: `Your ${selectedOption?.name} payment has been received and confirmed.`,
+        variant: "default",
+      });
+      
+      // Redirect to success page
+      setTimeout(() => {
+        setLocation('/payment-success');
+      }, 1000);
+    }, 3000);
   };
   
   const calculateCryptoAmount = (usdAmount: number, rate: number) => {
@@ -137,9 +159,16 @@ const CryptoMethod = ({ amount }: CryptoMethodProps) => {
                   </div>
                 </div>
                 
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 mb-4">
                   Scan this QR code or copy the address above to pay
                 </p>
+                
+                <Button 
+                  onClick={handleConfirmPayment}
+                  className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
+                >
+                  I've sent the payment
+                </Button>
               </div>
             </div>
           </TabsContent>
