@@ -1,8 +1,36 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 
 const HeroSection = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [
+    {
+      url: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
+      alt: "Luxury sports car - Blue Porsche"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
+      alt: "Luxury sports car - White Ferrari"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1617814076668-1ef67dab0fe3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
+      alt: "Luxury sports car - Lamborghini"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1614200179396-2bdb77ebf81b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
+      alt: "Luxury sports car - Black Porsche"
+    }
+  ];
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }, 4000); // Change image every 4 seconds
+    
+    return () => clearInterval(interval);
+  }, [images.length]);
   return (
     <section className="relative bg-primary pt-12 pb-24 overflow-hidden">
       {/* Hero background effect */}
@@ -39,33 +67,47 @@ const HeroSection = () => {
             </div>
           </motion.div>
           
-          {/* Hero car video */}
+          {/* Hero car images with delay effect */}
           <motion.div
             className="w-full md:w-1/2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="relative rounded-lg shadow-2xl overflow-hidden">
-              <video 
-                className="w-full h-auto"
-                autoPlay 
-                muted 
-                loop 
-                playsInline
-                poster="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80"
-              >
-                <source 
-                  src="https://cdn.pixabay.com/vimeo/328126065/lamborghini-23649.mp4?width=1280&hash=e373e387ca8f0e1c27aec75eb3f6f6a1da9e687a" 
-                  type="video/mp4" 
+            <div className="relative rounded-lg shadow-2xl overflow-hidden h-[350px] md:h-[400px]">
+              <AnimatePresence mode="wait">
+                <motion.img 
+                  key={currentImage}
+                  src={images[currentImage].url}
+                  alt={images[currentImage].alt}
+                  className="w-full h-full object-cover"
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ 
+                    duration: 1.2,
+                    ease: "easeInOut"
+                  }}
                 />
-                <source 
-                  src="https://cdn.pixabay.com/vimeo/767307082/sport-car-169966.mp4?width=1280&hash=626e8c8c82db41143b4f6d2aaff0d4f30a9cc4e6" 
-                  type="video/mp4" 
-                />
-                Your browser does not support the video tag.
-              </video>
+              </AnimatePresence>
+              
               <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent pointer-events-none"></div>
+              
+              {/* Image indicator dots */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImage(index)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      currentImage === index 
+                        ? "bg-white w-4" 
+                        : "bg-white/50"
+                    }`}
+                    aria-label={`View image ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
